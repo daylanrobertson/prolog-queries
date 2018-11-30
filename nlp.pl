@@ -147,11 +147,14 @@ prop(student,subclass,sam).
 prop(student,subclass,chris).
 
 prop(movie,subclass,'godfather').
+prop(movie,subclass,'the dark knight').
+
 
 
 prop(cs312,teacher,jordan).
 prop('godfather',director,'Francis Ford Coppola').
 prop('godfather',actor,'Marlon Brando').
+prop('the dark knight', director, 'Christopher Nolan').
 
 
 prop(S,pass,C):-
