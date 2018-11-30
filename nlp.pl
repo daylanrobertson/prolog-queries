@@ -72,7 +72,7 @@ check_noun([N|T],T,N):-
 is_noun(N):-
 	prop(_,subclass,N).
 is_noun(N):-
-	prop(N,subclass,_).
+	prop(N,_,_).
 is_noun(N):-
 	s(_,_,N,n,_,_).
 
@@ -129,6 +129,8 @@ prop(jane,is,tall).
 prop(john,is,tall).
 prop(jordan,is,tall).
 
+prop(jordan,height,190).
+
 prop(john,is,smart).
 prop(sally,is,beautiful).
 
@@ -153,6 +155,7 @@ prop(cs312,teacher,jordan).
 prop('godfather',director,'Francis Ford Coppola').
 prop('godfather',actor,'Marlon Brando').
 prop('the dark knight', director, 'Christopher Nolan').
+
 
 prop(N1,subclass,N2):-
 	prop(_,N1,N2),
