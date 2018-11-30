@@ -37,8 +37,11 @@ noun_phrase(T0,T4,Ind) :-
     det(T0,T1,Ind),
     check_noun(T1,T2,N1),
     check_preposition(T2,T3),
+    det(T3,T4,Ind),
     check_noun(T3,T4,N2),
     prop(N2,N1,Ind).
+
+realation(A,B,C):-
 
 
 det([D | T],T,_):-
@@ -114,6 +117,8 @@ prop(sally,enrolled_in,cs322).
 prop(sam,enrolled_in,math315).
 
 %A(noun) is B(adj)
+
+
 prop(cs312,is,hard).
 
 prop(mary,is,female).
@@ -129,6 +134,8 @@ prop(jordan,is,tall).
 prop(john,is,smart).
 prop(sally,is,beautiful).
 
+prop('godfather', is, good).
+
 prop(animal, subclass,elephant).
 prop(elephant,is,large).
 
@@ -141,8 +148,8 @@ prop(student,subclass,chris).
 
 prop(movie,subclass,'godfather').
 
-prop('godfather', is, good).
 
+prop(cs312,teacher,jordan).
 prop('godfather',director,'Francis Ford Coppola').
 prop('godfather',actor,'Marlon Brando').
 
