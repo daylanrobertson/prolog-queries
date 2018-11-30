@@ -3,25 +3,43 @@ consult(wn_s).
 % (noun) is/are (adjectives)
 sentence(T0,T4,Ind):-
 	det(T0,T1,Ind),
-	has_noun(T1,T2,Ind),
-	is_phase(T2,T3),
+	check_noun(T1,T2,Ind),
+	check_is_are(T2,T3),
 	adj(T3,T4,Ind).
 
 
-
-question([who,is | T0],T1,Ind) :-
+question([A,Ind,Adj|T],T,Ind):-
+	is_auxiliary_verb(A),
+	prop(Ind,is,Adj).
+/*
+question([is,Ind,T0],T1,Ind):-
+	noun_phrase(T0,T1,Ind).*/%does not work for now
+question([who,A | T0],T1,Ind) :-
+	is_auxiliary_verb(A),
     noun_phrase(T0,T1,Ind).
-question([who,is | T0],T1,Ind) :-
-    adjectives(T0,T1,Ind).
-question([what,is | T0],T1,Ind) :-
+question([who,A | T0],T1,Ind) :-
+ 	is_auxiliary_verb(A),
+   	adjectives(T0,T1,Ind).
+question([what,A | T0],T1,Ind) :-
+	is_auxiliary_verb(A),
     noun_phrase(T0,T1,Ind).
-question([what,is | T0],T1,Ind) :-
+question([what,A | T0],T1,Ind) :-
+	is_auxiliary_verb(A),
     adjectives(T0,T1,Ind).
 
-noun_phrase(T0,T3,Ind) :-
+noun_phrase(T0,T4,Ind) :-
     det(T0,T1,Ind),
     adjectives(T1,T2,Ind),
-    noun(T2,T3,Ind).
+    noun(T2,T3,Ind),
+    mp(T3,T4,Ind).
+
+noun_phrase(T0,T4,Ind) :-
+    det(T0,T1,Ind),
+    check_noun(T1,T2,N1),
+    check_preposition(T2,T3),
+    check_noun(T3,T4,N2),
+    prop(N2,N1,Ind).
+
 
 det([D | T],T,_):-
 	member(D,[a,the]).
@@ -38,9 +56,16 @@ noun([N|T],T,Ind):-
 	s(_,_,N,n,_,_),
 	prop(N,subclass,Ind).
 
-is_phase([is|T],T).
+check_is_are([A|T],T):-
+	is_auxiliary_verb(A).
 
-has_noun([N|T],T,N):-
+check_preposition([P|T],T):-
+	is_preposition(P).
+
+mp(T,T,_).
+
+
+check_noun([N|T],T,N):-
 	is_noun(N).
 
 is_noun(N):-
@@ -50,6 +75,14 @@ is_noun(N):-
 is_noun(N):-
 	s(_,_,N,n,_,_).
 
+is_adj(A):-
+	s(_,_,A,a,_,_).
+
+is_preposition(P):-
+	member(P,[of,to,in,on]).
+
+is_auxiliary_verb(V):-
+	member(V,[am,is,am,are,were]).
 /*
 noun([Ind|T],T,Ind) :- 
 	cs(_,_,N,n,_,_),
@@ -68,7 +101,6 @@ adv(R):-
 prop(course,subclass,cs312).
 prop(course,subclass,cs322).
 prop(course,subclass,math315).
-
 
 
 prop(cs312,department,comp_sci).
@@ -107,6 +139,18 @@ prop(student,subclass,john).
 prop(student,subclass,sam).
 prop(student,subclass,chris).
 
+prop(movie,subclass,'godfather').
+
+prop('godfather', is, good).
+
+prop('godfather',director,'Francis Ford Coppola').
+prop('godfather',actor,'Marlon Brando').
+
+
+prop(S,pass,C):-
+	grade(S,C,G),
+    G >= 50.
+
 prop(person,subclass,A):-
 	prop(student,subclass,A).
 
@@ -122,29 +166,48 @@ prop(A,subclass,C):-
 	prop(A,subclass,B),
 	prop(B,subclass,C).
 */
-passed(S,C):-
-    grade(S,C,G),
-    G >= 50.
 
 grade(sam,cs312,93).
 grade(chris,cs312,82).
 
+
 form_sentence_from_question([_,is|T],Ind,Ans):-
 	atomic_list_concat([i,think,Ind,is|T], ' ', Ans).
+form_sentence_from_question(_,Ind,Ind).
 
 
-startNLP(Ans) :-
+startNLP:-
     write("what do you want to ask?"),nl,flush_output(current_output),
     readln(Ln),
-    distinct(process(Ln,Ans)).
+    distinct(process(Ln,Ans)),
+    write(Ans),nl,
+    startNLP.
+
+syntaxIO(Type):-
+	write("what do you want to ask?"),nl,flush_output(current_output),
+    readln(Ln),
+    checkSyntax(Ln,Type).
+
+%does not work for now
+checkSyntax(Ln,question):-
+	check_is_are(Ln,T0),
+	checkNoun(T0,T1),
+	checkAdj(T1,End),
+	End = '?'.
+
+remove_last([_], []).
+remove_last([X|Xs], [X|WithoutLast]) :- 
+    without_last(Xs, WithoutLast).
 
 %if question is true about somthing
-process(Ln,Ans):-
+process(Ln,Ind):-
     question(Ln,End,Ind),
-    form_sentence_from_question(Ln,Ind,Ans),
     member(End,[[],['?'],['.']]).
+    %form_sentence_from_question(Ln,Ind,Ans).
 
-
+/*
 process(Ln,Ans):-
     sentence(Ln,End,Ans),
     member(End,[[],['?'],['.']]).
+*/
+
