@@ -41,6 +41,7 @@ noun_phrase(T0,T4,Ind) :-
     prop(N2,N1,Ind).
 
 
+
 det([D | T],T,_):-
 	member(D,[a,the]).
 
@@ -71,7 +72,7 @@ check_noun([N|T],T,N):-
 is_noun(N):-
 	prop(_,subclass,N).
 is_noun(N):-
-	prop(N,subclass,_).
+	prop(N,_,_).
 is_noun(N):-
 	s(_,_,N,n,_,_).
 
@@ -114,6 +115,8 @@ prop(sally,enrolled_in,cs322).
 prop(sam,enrolled_in,math315).
 
 %A(noun) is B(adj)
+
+
 prop(cs312,is,hard).
 
 prop(mary,is,female).
@@ -126,8 +129,12 @@ prop(jane,is,tall).
 prop(john,is,tall).
 prop(jordan,is,tall).
 
+prop(jordan,height,190).
+
 prop(john,is,smart).
 prop(sally,is,beautiful).
+
+prop('godfather', is, good).
 
 prop(animal, subclass,elephant).
 prop(elephant,is,large).
@@ -142,12 +149,17 @@ prop(student,subclass,chris).
 prop(movie,subclass,'godfather').
 prop(movie,subclass,'the dark knight').
 
-
-prop('godfather', is, good).
-
+prop(water,form,ice).
+% jordan is a teacher of cs312
+prop(cs312,teacher,jordan).
 prop('godfather',director,'Francis Ford Coppola').
 prop('godfather',actor,'Marlon Brando').
 prop('the dark knight', director, 'Christopher Nolan').
+prop('Hitch',director, 'Andy Tennant').
+
+
+prop(director,subclass,N2):-
+	prop(_,director,N2).
 
 
 prop(S,pass,C):-
@@ -161,7 +173,7 @@ prop(object,subclass,A):-
 	prop(course,subclass,A).
 prop(object,subclass,A):-
 	prop(animal,subclass,A).
-
+%prop(A,subclass,B):-
 
 
 /*
