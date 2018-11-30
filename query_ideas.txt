@@ -1,0 +1,4 @@
+what movies is X in? (x is an actor)
+when was X published? (x is a movie)
+
+what is a good action movie?
