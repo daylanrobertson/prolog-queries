@@ -37,11 +37,9 @@ noun_phrase(T0,T4,Ind) :-
     det(T0,T1,Ind),
     check_noun(T1,T2,N1),
     check_preposition(T2,T3),
-    det(T3,T4,Ind),
     check_noun(T3,T4,N2),
     prop(N2,N1,Ind).
 
-realation(A,B,C):-
 
 
 det([D | T],T,_):-
@@ -150,11 +148,15 @@ prop(movie,subclass,'godfather').
 prop(movie,subclass,'the dark knight').
 
 
-
+% jordan is a teacher of cs312
 prop(cs312,teacher,jordan).
 prop('godfather',director,'Francis Ford Coppola').
 prop('godfather',actor,'Marlon Brando').
 prop('the dark knight', director, 'Christopher Nolan').
+
+prop(N1,subclass,N2):-
+	prop(_,N1,N2),
+	s(_,_,N1,n,_,_).
 
 
 prop(S,pass,C):-
@@ -168,7 +170,7 @@ prop(object,subclass,A):-
 	prop(course,subclass,A).
 prop(object,subclass,A):-
 	prop(animal,subclass,A).
-
+%prop(A,subclass,B):-
 
 
 /*
