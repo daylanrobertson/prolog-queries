@@ -149,17 +149,17 @@ prop(student,subclass,chris).
 prop(movie,subclass,'godfather').
 prop(movie,subclass,'the dark knight').
 
-
+prop(water,form,ice).
 % jordan is a teacher of cs312
 prop(cs312,teacher,jordan).
 prop('godfather',director,'Francis Ford Coppola').
 prop('godfather',actor,'Marlon Brando').
 prop('the dark knight', director, 'Christopher Nolan').
+prop('Hitch',director, 'Andy Tennant').
 
 
-prop(N1,subclass,N2):-
-	prop(_,N1,N2),
-	s(_,_,N1,n,_,_).
+prop(director,subclass,N2):-
+	prop(_,director,N2).
 
 
 prop(S,pass,C):-
