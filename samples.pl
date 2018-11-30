@@ -11,8 +11,12 @@
 % Justin Bieber
 :- rdf_load('http://www.wikidata.org/wiki/Special:EntityData/Q34086.rdf').
 
+% The Dark Knight
 :- rdf_load('http://www.wikidata.org/wiki/Special:EntityData/Q163872.rdf').
-:- rdf_load('http://www.wikidata.org/wiki/Special:EntityData/Q178348.rdf').
+
+% Iron Man
+:- rdf_load('http://www.wikidata.org/wiki/Special:EntityData/Q192724.rdf').
+
 % 'http://www.wikidata.org/entity/Q45772'
 
 % Finds all objects that match the pred 'Part Of' for a given name
@@ -46,14 +50,15 @@ sibling(P, N) :-
     rdf(S, X, M),
     rdf(M,'http://schema.org/name',literal(lang(en,N))).
 
-check(N, P, O) :-
+% Check the a property value of a subject by providing the full name.
+% Examples check('Iron Man', cast, N). or check('Justin Bieber', mother, N).
+check(N, P, N2) :-
     id(N, I),
     translation(P, X),
-    rdf(I, X, O).
+    rdf(I, X, O),
+    id(N2,O).
 
-
-new_test :- rdf_load('http://www.wikidata.org/wiki/Special:EntityData/Q2023710.rdf').
-
+% Given the id ('QXXXX') of an entity, this will load the wiki data of that entity.
 load_entity(E) :-
     X = 'http://www.wikidata.org/wiki/Special:EntityData/',
     Y = '.rdf',
@@ -91,7 +96,19 @@ imdb_test(M, O) :-
     translation(imdb, X),
     rdf(I, X, O).
 
+prop(M, R, P) :-
+    translation(R, X),
+    id(M, I),
+    rdf(I, X, I2),
+    id(P, I2).
 
+prop(M, R, P) :-
+    translation(R, X),
+    id(M, I),
+    rdf(I, X, I2),
+    id(P, I2).
+
+    
 
 % some example translations
 translation(actor, 'https://schema.org/actor').
